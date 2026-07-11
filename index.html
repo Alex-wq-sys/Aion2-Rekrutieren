@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gildenvorstellung - F [Aion 2]</title>
+    <style>
+        :root {
+            --bg-dark: #07080a; 
+            --bg-card: #0d0f14; 
+            --bg-card-hover: #12151c;
+            --accent-red: #ff1f36; 
+            --accent-dim: #990012;
+            --accent-glow: rgba(255, 31, 54, 0.35);
+            --text-main: #f1f5f9;
+            --text-muted: #64748b;
+            --text-bright: #ffffff;S
+            --border-glow: #1a0b0e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 60px 15px;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 31, 54, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(255, 31, 54, 0.03) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* --- BRACHIALES LEADERBOARD (ANSPRECHPARTNER) --- */
+        .leadership-zone {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .leader-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #090a0d 100%);
+            border: 1px solid var(--border-glow);
+            border-top: 4px solid var(--accent-red);
+            border-radius: 12px;
+            padding: 25px 25px 50px 25px; /* Erhöhtes Padding unten verhindert Überschneidungen */
+            display: flex;
+            gap: 20px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+        }
+
+        .leader-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; width: 80px; height: 80px;
+            background: linear-gradient(45deg, transparent 45%, rgba(255, 31, 54, 0.05) 50%, transparent 60%);
+            transform: translateX(80px);
+            transition: 0.5s;
+        }
+
+        .leader-card:hover::after {
+            transform: translateX(-150px);
+        }
+
+        .leader-card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 40px rgba(255, 31, 54, 0.1);
+            border-color: rgba(255, 31, 54, 0.3);
+        }
+
+        .leader-avatar {
+            width: 75px;
+            height: 75px;
+            border-radius: 8px;
+            background: #161920;
+            border: 2px solid var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent-red);
+            text-shadow: 0 0 10px var(--accent-glow);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .leader-info {
+            flex: 1;
+        }
+
+        .leader-role {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-red);
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .leader-name {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--text-bright);
+            letter-spacing: 1px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .leader-focus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .focus-tag {
+            background: rgba(255, 31, 54, 0.08);
+            border: 1px solid rgba(255, 31, 54, 0.2);
+            color: #f87171;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .leader-desc {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .discord-ping {
+            position: absolute;
+            bottom: 12px; /* Weiter runter gesetzt */
+            right: 25px;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid #1e293b;
+            color: #cbd5e1;
+        }
+        .discord-ping::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 6px;
+            box-shadow: 0 0 8px #22c55e;
+        }
+
+        /* --- ASMODIER POWER BANNER --- */
+        .faction-shrine {
+            background: linear-gradient(90deg, #180507 0%, var(--bg-card) 40%, var(--bg-card) 60%, #180507 100%);
+            border: 1px solid rgba(255, 31, 54, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: 0 0 40px rgba(255, 31, 54, 0.05);
+            position: relative;
+        }
+
+        .faction-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .faction-name {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-bright);
+            letter-spacing: 8px;
+            text-shadow: 0 0 25px var(--accent-glow);
+            font-family: 'Arial Black', Impact, sans-serif;
+        }
+
+        .faction-motto {
+            font-size: 1.1rem;
+            color: var(--accent-red);
+            font-style: italic;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 20px 20px 40px 20px;
+        }
+
+        .guild-name {
+            font-size: 6rem;
+            font-weight: 950;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 20px;
+            line-height: 0.9;
+            margin-bottom: 15px;
+            text-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.1),
+                0 0 30px var(--accent-glow),
+                0 0 60px var(--accent-red);
+            font-family: 'Arial Black', Impact, sans-serif;
+        }
+
+        .sub-title {
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-weight: 500;
+        }
+        
+        .sub-title span {
+            color: var(--accent-red);
+            text-shadow: 0 0 8px var(--accent-glow);
+            font-weight: 700;
+        }
+
+        /* --- DASHBOARD SEKTIONEN --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            transition: border-color 0.3s ease;
+        }
+
+        section:hover {
+            border-color: rgba(255, 31, 54, 0.15);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--text-bright);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 900;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 50px; height: 4px;
+            background: var(--accent-red);
+            box-shadow: 0 0 10px var(--accent-red);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--text-bright);
+            margin: 30px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--accent-red);
+            padding-left: 12px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        /* Highlight-Sätze für coolen Lesefluss */
+        .punchline {
+            font-size: 1.2rem;
+            color: var(--text-bright);
+            font-weight: 700;
+            border-left: 4px solid var(--accent-red);
+            padding-left: 20px;
+            margin: 25px 0;
+            background: linear-gradient(90deg, rgba(255, 31, 54, 0.05) 0%, transparent 100%);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        /* --- PRALLE SMART LISTS --- */
+        .smart-list {
+            list-style: none;
+        }
+
+        .smart-list li {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid #161920;
+            padding: 16px 20px 16px 45px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            transition: all 0.2s ease;
+        }
+
+        .smart-list li:hover {
+            background: rgba(255, 31, 54, 0.02);
+            border-color: rgba(255, 31, 54, 0.1);
+            transform: translateX(4px);
+        }
+
+        .smart-list li::before {
+            content: "◢";
+            position: absolute;
+            left: 20px;
+            top: 18px;
+            color: var(--accent-red);
+            font-size: 0.7rem;
+            text-shadow: 0 0 5px var(--accent-red);
+        }
+
+        .smart-list li strong {
+            color: var(--text-bright);
+            font-weight: 700;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* --- SPECIAL VISION BOX --- */
+        .vision-box {
+            background: linear-gradient(145deg, var(--bg-card) 0%, #160709 100%);
+            border: 1px solid rgba(255, 31, 54, 0.2);
+        }
+        
+        .vision-box h2::after {
+            width: 120px;
+            background: linear-gradient(to right, var(--accent-red), transparent);
+        }
+
+        /* --- RESPONSIVE SHIFT --- */
+        @media (max-width: 900px) {
+            .leadership-zone, .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .guild-name {
+                font-size: 3.8rem;
+                letter-spacing: 10px;
+            }
+            body {
+                padding: 30px 10px;
+            }
+            section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- CORE LEADERS (ANSPRECHPARTNER) BANNER -->
+        <div class="leadership-zone">
+            
+            <!-- FIN CARD -->
+            <div class="leader-card">
+                <div class="leader-avatar">F</div>
+                <div class="leader-info">
+                    <div class="leader-role">Gilden Leader</div>
+                    <div class="leader-name">Fin</div>
+                    <div class="leader-focus">
+                        <span class="focus-tag">Strategie</span>
+                        <span class="focus-tag">Allianzen</span>
+                        <span class="focus-tag">Main-Orga</span>
+                    </div>
+                    <div class="leader-desc">Hauptansprechpartner für externe Gilden-Diplomatie, Raid-Planung und das große Ganze. Hat immer ein offenes Ohr.</div>
+                </div>
+                <div class="discord-ping">Fin online</div>
+            </div>
+
+            <!-- FUNKY CARD -->
+            <div class="leader-card">
+                <div class="leader-avatar">F</div>
+                <div class="leader-info">
+                    <div class="leader-role">Co-Leader</div>
+                    <div class="leader-name">Funky</div>
+                    <div class="leader-focus">
+                        <span class="focus-tag">Member-Support</span>
+                        <span class="focus-tag">PvP-Taktik</span>
+                        <span class="focus-tag">Rekrutierung</span>
+                        <span class="focus-tag">Raid-Planung</span>
+                    </div>
+                    <div class="leader-desc">Zuständig für das feurige Ingame-Geschehen, Taktiken, Struktur sowie die Raid-Planung und Raid-Leitung. Dein Go-To-Man und Ansprechpartner für Fragen rund um den Beitritt.</div>
+                </div>
+                <div class="discord-ping">Funky online</div>
+            </div>
+
+        </div>
+
+        <!-- ASMODIER FRAKTIONS-SCHREIN -->
+        <div class="faction-shrine">
+            <div class="faction-title">Wir marschieren unter dem Blutmond</div>
+            <div class="faction-name">ASMODIER</div>
+            <div class="faction-motto">Die Herrscher der Dunkelheit — Stolz, Düster & Unbeugsam</div>
+        </div>
+
+        <!-- HEADER BEREICH -->
+        <div class="header-section">
+            <div class="guild-name">FUSION</div>
+            <div class="sub-title">Gemeinsam unaufhaltsam in <span>Aion 2</span></div>
+        </div>
+
+        <!-- DASHBOARD-LAYOUT FÜR KREATIVES LESEN -->
+        <div class="dashboard-grid">
+            
+            <!-- HAUPT-STORY -->
+            <section>
+                <h2>Wer wir sind</h2>
+                <p>Wir sind nicht einfach nur eine Ansammlung von Pixeln auf einem Server oder eine seelenlose ID in einer Mitgliederliste. Wir sind ein eingeschworener, leidenschaftlicher Haufen von Abenteurern, Weltenbummlern und passionierten Langzeit-Gamern, die das MMORPG-Genre seit Jahrzehnten im Blut haben.</p>
+                <p>Entstanden aus einem harten Kern alter Weggefährten, die schon epische Schlachten in vergangenen Welten geschlagen haben, und stetig bereichert durch neue Freunde, haben wir uns zusammengeschlossen, um eine echte virtuelle Heimat zu schaffen.</p>
+                
+                <div class="punchline">
+                    "Perfekte Fusion aus ambitionierter Gaming-Lounge und koordinierter Einsatztruppe."
+                </div>
+                
+                <p>Bei uns treffen erfahrene Veteranen, die schon vor über fofzehn Jahren die ersten Festungen im alten Atreia belagert und fliegend den Himmel unsicher gemacht haben, auf neugierige Neueinsteiger, die das unvergleichliche Adrenalin eines echten MMOs gerade erst für sich entdecken.</p>
+                <p>Wir wollen groß genug sein, um im High-End-Content, bei Server-Events und in gewaltigen Schlachten ein unübersehbarer, gewichtiger Faktor zu sein. Gleichzeitig bleiben wir im Herzen so strukturiert, dass sich niemand wie eine austauschbare Nummer fühlt.</p>
+            </section>
+
+            <!-- ECKDATEN NEBENBEI (Kein Textwüste) -->
+            <section style="display: flex; flex-direction: column; justify-content: center;">
+                <h2>Gilden-Eckdaten</h2>
+                <ul class="smart-list">
+                    <li><strong>Ausrichtung:</strong> Progress-orientiertes PvE & PvP</li>
+                    <li><strong>Fraktion:</strong> Asmodier (Dunkle Seite)</li>
+                    <li><strong>Mentalität:</strong> Semi-Progress mit Fokus auf Feierabend-Familie</li>
+                    <li><strong>Pflichten:</strong> Discord-Präsenz bei großen Events & Raids</li>
+                    <li><strong>Motto:</strong> Reallife geht immer vor, ohne Wenn und Aber!</li>
+                </ul>
+            </section>
+
+        </div> <!-- ENDE GRID 1 -->
+
+        <div class="dashboard-grid">
+
+            <!-- WAS UNS AUSZEICHNET -->
+            <section class="full-width">
+                <h2>Was uns als Familie auszeichnet</h2>
+                <p>Das unumstößliche Herzstück unserer Gemeinschaft ist der bedingungslose, ehrliche Zusammenhalt. Wir funktionieren wie eine echte Familie – nur mit dem entscheidenden Vorteil, dass es bei uns keinen lästigen Abwasch gibt! Wenn das echte Leben anklopft, das Kind weint, die Spätschicht unerwartet länger dauert, Prüfungen anstehen oder der Hund quersteht, gibt es bei uns kein Drama, keine Rechtfertigungsnot und keine dummen Sprüche. Genau dieses Fundament des gegenseitigen Verständnisses schweißt uns so unnormal zusammen.</p>
+            </section>
+
+        </div> <!-- ENDE GRID 2 -->
+
+        <div class="dashboard-grid">
+
+            <!-- WEN WIR SUCHEN -->
+            <section>
+                <h2>Wen wir suchen</h2>
+                
+                <h3>Für unsere Feierabend-Helden</h3>
+                <ul class="smart-list">
+                    <li><strong>Die gemütlichen Genießer:</strong> Stressfreier, sicherer Hafen nach der Arbeit. Einloggen, quatschen, ohne Performance-Druck.</li>
+                    <li><strong>Die flexiblen Allrounder:</strong> Keine Kernzeiten wegen Schichtarbeit oder Familie? Kein Problem, klink dich ein, wann du willst!</li>
+                </ul>
+
+                <h3>Für unsere Semi-Progress-Spieler</h3>
+                <ul class="smart-list">
+                    <li><strong>Die ambitionierten Optimierer:</strong> Wenig Zeit, aber maximale Effizienz. Du kennst deine Klasse und optimierst dein Gear.</li>
+                    <li><strong>Die verlässlichen Taktiker:</strong> Bock auf saubere Instanzen-Runs und Absprachen ohne militärischen Hardcore-Zwang.</li>
+                </ul>
+            </section>
+
+            <!-- WAS WIR BIETEN -->
+            <section>
+                <h2>Was wir dir bieten</h2>
+                <ul class="smart-list" style="margin-top: 15px;">
+                    <li><strong>Toxikfreies Wohlwohl-Umfeld:</strong> Respektvoller, erwachsener, aber immer humorvoller Umgangston auf absoluter Augenhöhe.</li>
+                    <li><strong>Freiheit & Struktur:</strong> Keine Online-Zwänge unter der Woche, dafür top geplante und extrem disziplinierte Raid-Events.</li>
+                    <li><strong>Bedingungsloser Support:</strong> Klassen-Guides, Theorycrafting oder Hilfe bei schweren Quests – hier bleibt niemand allein zurück.</li>
+                </ul>
+            </section>
+
+        </div> <!-- ENDE GRID 3 -->
+
+        <div class="dashboard-grid">
+
+            <!-- FRAGEN & ANLIEGEN REITER (NEU) -->
+            <section class="full-width">
+                <h2>Fragen oder Anliegen?</h2>
+                <p>Du hast Fragen zu unserer Gilde, möchtest dich bewerben oder ein diplomatisches Anliegen klären? Du kannst uns **jederzeit direkt auf unserem Discord anschreiben**. Wir sind rund um die Uhr für dich erreichbar und melden uns so schnell wie möglich bei dir zurück!</p>
+            </section>
+
+        </div> <!-- ENDE NEUER GRID -->
+
+        <div class="dashboard-grid">
+
+            <!-- VISION FÜR AION 2 -->
+            <section class="full-width vision-box">
+                <h2>Unsere Vision für Aion 2</h2>
+                <p>Aion 2 wirft seine Schatten voraus, und wir stehen bereits in den Startlöchern. Unsere Vision ist so simpel wie monumental: Wir wollen vom allerersten Tag an, an dem die Server ihre Pforten öffnen, ein unerschütterliches, stabile und ambitioniertes Fundament in den Boden stampfen. Wir wollen in Aion 2 eine Gilde formen, deren Name auf dem gesamten Server als absolutes Qualitätssiegel für Fairness, spielerische Kompetenz und unbrechbaren Zusammenhalt steht.</p>
+            </section>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
